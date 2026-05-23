@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório — Desafios e Necessidades na Educação Física com Estudantes Autistas</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #378ADD;
+    --blue-light: #B5D4F4;
+    --blue-dark: #185FA5;
+    --teal: #1D9E75;
+    --teal-light: #9FE1CB;
+    --coral: #D85A30;
+    --amber: #BA7517;
+    --amber-light: #FAC775;
+    --gray: #888780;
+    --gray-light: #D3D1C7;
+    --purple: #7F77DD;
+    --purple-light: #CECBF6;
+    --red: #E24B4A;
+    --green: #639922;
+    --pink: #D4537E;
+    --text: #1a1a18;
+    --text-muted: #5a5a56;
+    --text-light: #88887e;
+    --bg: #ffffff;
+    --bg-2: #f7f6f2;
+    --bg-3: #f0ede6;
+    --border: #e0ddd4;
+    --border-strong: #c8c5bc;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* --- COVER --- */
+  .cover {
+    background: linear-gradient(135deg, #1a2f5e 0%, #1D9E75 100%);
+    color: white;
+    padding: 64px 56px;
+    margin: 0 -24px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .cover-tag {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 20px;
+  }
+  .cover h1 {
+    font-family: Arial, sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  .cover-sub {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 40px;
+    max-width: 560px;
+  }
+  .cover-meta {
+    display: flex; gap: 40px; flex-wrap: wrap;
+  }
+  .cover-stat { }
+  .cover-stat .num {
+    font-family: Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .cover-stat .lbl {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* --- TYPOGRAPHY --- */
+  h1, h2, h3, h4 { font-family: Arial, sans-serif; color: var(--text); line-height: 1.3; }
+
+  .section-num {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-dark);
+    margin-bottom: 6px;
+    margin-top: 48px;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 28px;
+    margin-bottom: 10px;
+  }
+
+  p { margin-bottom: 14px; color: var(--text-muted); }
+  p strong { color: var(--text); font-weight: 700; }
+
+  /* --- METRIC GRID --- */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .metric {
+    background: var(--bg-2);
+    border-radius: var(--radius);
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .metric .lbl { font-family: Arial, sans-serif; font-size: 11px; color: var(--text-light); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric .val { font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; color: var(--text); }
+  .metric .sub { font-family: Arial, sans-serif; font-size: 11px; color: var(--text-light); margin-top: 2px; }
+
+  /* --- CHART CARDS --- */
+  .chart-grid {
+    display: grid;
+    gap: 20px;
+    margin: 20px 0 32px;
+  }
+  .chart-grid.two { grid-template-columns: 1fr 1fr; }
+  .chart-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .chart-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+  .chart-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    font-family: Arial, sans-serif;
+  }
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* --- HORIZONTAL BARS --- */
+  .hbar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .hbar-label { font-family: Arial, sans-serif; font-size: 11px; color: var(--text-muted); width: 180px; flex-shrink: 0; line-height: 1.3; }
+  .hbar-label.wide { width: 210px; }
+  .hbar-track { flex: 1; height: 14px; background: var(--bg-3); border-radius: 3px; overflow: hidden; }
+  .hbar-fill { height: 100%; border-radius: 3px; }
+  .hbar-val { font-family: Arial, sans-serif; font-size: 11px; color: var(--text-light); width: 36px; text-align: right; }
+
+  /* --- COMPARE BARS --- */
+  .cbar-wrap { margin-bottom: 12px; }
+  .cbar-label { font-family: Arial, sans-serif; font-size: 12px; color: var(--text); margin-bottom: 5px; font-weight: 600; }
+  .cbar-row { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
+  .cbar-tag { font-family: Arial, sans-serif; font-size: 10px; font-weight: 700; width: 44px; flex-shrink: 0; }
+  .cbar-tag.p { color: var(--blue-dark); }
+  .cbar-tag.t { color: var(--teal); }
+  .cbar-track { flex: 1; height: 12px; background: var(--bg-3); border-radius: 2px; overflow: hidden; }
+  .cbar-fill { height: 100%; border-radius: 2px; }
+  .cbar-fill.p { background: var(--blue); }
+  .cbar-fill.t { background: var(--teal); }
+  .cbar-val { font-family: Arial, sans-serif; font-size: 11px; color: var(--text-light); width: 30px; text-align: right; }
+
+  /* --- DONUT LEGEND --- */
+  .donut-wrap { display: flex; align-items: center; gap: 16px; }
+  .donut-wrap .donut-canvas-wrap { position: relative; width: 130px; height: 130px; flex-shrink: 0; min-width: 130px; }
+  .donut-wrap .donut-canvas-wrap canvas { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; }
+  .donut-leg { }
+  .donut-leg .item { display: flex; align-items: center; gap: 6px; font-family: Arial, sans-serif; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+  .donut-leg .dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .donut-leg .pct { font-weight: 700; color: var(--text); margin-left: 2px; }
+
+  /* --- INSIGHT BOXES --- */
+  .insight {
+    border-left: 4px solid;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px;
+    margin: 18px 0;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+  .insight.blue { border-color: var(--blue); background: #EEF5FC; }
+  .insight.teal { border-color: var(--teal); background: #EAF7F2; }
+  .insight.amber { border-color: var(--amber); background: #FEF7EA; }
+  .insight.red { border-color: var(--red); background: #FEF0F0; }
+  .insight.purple { border-color: var(--purple); background: #F3F2FE; }
+  .insight strong { color: var(--text); font-weight: 700; }
+
+  /* --- COMPARE HEADER --- */
+  .compare-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .ch-card {
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    border: 1px solid;
+  }
+  .ch-card.prof { background: #EEF1FB; border-color: var(--blue-light); }
+  .ch-card.train { background: #E1F5EE; border-color: var(--teal-light); }
+  .ch-card .role { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .ch-card.prof .role { color: var(--blue-dark); }
+  .ch-card.train .role { color: var(--teal); }
+  .ch-card .n { font-family: Arial, sans-serif; font-size: 24px; font-weight: 700; color: var(--text); }
+  .ch-card .sub { font-family: Arial, sans-serif; font-size: 11px; color: var(--text-light); margin-top: 3px; }
+
+  /* --- SUMMARY TABLE --- */
+  .sum-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: Arial, sans-serif; font-size: 12px; }
+  .sum-table th { background: var(--bg-3); padding: 8px 12px; text-align: left; font-weight: 700; color: var(--text); border-bottom: 2px solid var(--border-strong); }
+  .sum-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; }
+  .sum-table tr:last-child td { border-bottom: none; }
+  .sum-table tr:nth-child(even) td { background: var(--bg-2); }
+  .sum-table .pct-p { color: var(--blue-dark); font-weight: 700; }
+  .sum-table .pct-t { color: var(--teal); font-weight: 700; }
+  .sum-table .diff-pos { color: var(--red); font-weight: 700; }
+  .sum-table .diff-neg { color: var(--teal); font-weight: 700; }
+
+  /* --- DIVIDER --- */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* --- PAGE BREAK --- */
+  @media print {
+    .page-break { page-break-before: always; }
+    .cover { margin: 0; }
+    body { padding: 0 32px 40px; }
+  }
+
+  /* SECTION LABEL */
+  .sec-label {
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--blue-dark);
+    color: white;
+    padding: 3px 9px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+  }
+  .sec-label.green { background: var(--teal); }
+  .sec-label.amber { background: var(--amber); }
+  .sec-label.compare { background: #2d3748; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: var(--text-light);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-tag">Relatório de Pesquisa · 2025</div>
+  <h1>Desafios e Necessidades na Educação Física com Estudantes Autistas</h1>
+  <p class="cover-sub">Análise dos dados coletados em 14 seminários regionais com profissionais de Educação Física escolar e do esporte adaptado.</p>
+  <div class="cover-meta">
+    <div class="cover-stat"><div class="num">783</div><div class="lbl">Respondentes</div></div>
+    <div class="cover-stat"><div class="num">14</div><div class="lbl">Seminários</div></div>
+    <div class="cover-stat"><div class="num">22</div><div class="lbl">Questões</div></div>
+    <div class="cover-stat"><div class="num">2025</div><div class="lbl">Coleta de dados</div></div>
+  </div>
+</div>
+
+<!-- SUMÁRIO EXECUTIVO -->
+<div class="sec-label">Sumário Executivo</div>
+<h2>Principais achados</h2>
+<p>Este relatório analisa os dados de uma pesquisa aplicada a 783 profissionais de Educação Física e esporte que participaram de seminários de capacitação em 2025. O objetivo foi mapear os principais desafios, lacunas de formação e necessidades de apoio no trabalho com estudantes e atletas autistas.</p>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="lbl">Respondentes</div>
+    <div class="val">783</div>
+    <div class="sub">14 seminários regionais</div>
+  </div>
+  <div class="metric">
+    <div class="lbl">Atendem autistas</div>
+    <div class="val">69%</div>
+    <div class="sub">543 atualmente</div>
+  </div>
+  <div class="metric">
+    <div class="lbl">Adaptam atividades</div>
+    <div class="val">81%</div>
+    <div class="sub">sempre ou quase sempre</div>
+  </div>
+  <div class="metric">
+    <div class="lbl">Querem capacitação</div>
+    <div class="val">95%</div>
+    <div class="sub">aceitariam novo convite</div>
+  </div>
+</div>
+
+<div class="insight blue">
+  <strong>Síntese:</strong> A pesquisa revela um campo com alta demanda prática e baixa cobertura de formação. Profissionais estão em contato diário com estudantes autistas e adaptam suas práticas de forma intuitiva, mas sem repertório técnico adequado. A demanda por capacitação é quase universal (95%), e os conteúdos mais solicitados apontam para uma lacuna estrutural: falta entendimento sobre o espectro, estratégias de comunicação e ferramentas para planejamento individualizado.
+</div>
+
+<hr class="divider">
+
+<!-- SEÇÃO 1 -->
+<div class="sec-label">Seção 1</div>
+<h2>Perfil dos respondentes</h2>
+
+<h3>Distribuição por seminário</h3>
+
+<div class="chart-grid">
+  <div class="chart-card">
+    <h4>Respondentes por seminário</h4>
+    <div class="chart-wrap" style="height:280px"><canvas id="c-sem"></canvas></div>
+  </div>
+</div>
+
+<h3>Atuação profissional</h3>
+<p>A amostra é predominantemente composta por professores de Educação Física Escolar (57%), seguidos de treinadores esportivos (19%). Uma parcela relevante atua em contextos de Educação Especial (AEE/PAEE) e suporte escolar.</p>
+
+<div class="chart-grid two">
+  <div class="chart-card">
+    <h4>Perfil de atuação</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-atua"></canvas></div>
+      <div class="donut-leg" id="leg-atua"></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h4>Experiência com estudantes autistas</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-exp"></canvas></div>
+      <div class="donut-leg" id="leg-exp"></div>
+    </div>
+  </div>
+</div>
+
+<h3>Quantidade de alunos atendidos</h3>
+<p>Entre os profissionais que trabalham atualmente com estudantes autistas, a maioria atende quatro ou mais alunos (54%), o que evidencia que a inclusão não é um fenômeno isolado, mas uma realidade cotidiana e complexa.</p>
+
+<div class="chart-grid">
+  <div class="chart-card">
+    <h4>Quantidade atual de alunos/atletas autistas</h4>
+    <div class="chart-wrap" style="height:180px"><canvas id="c-qtd"></canvas></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SEÇÃO 2 -->
+<div class="sec-label">Seção 2</div>
+<h2>Desafios no planejamento e execução</h2>
+
+<h3>Planejamento das aulas e treinos</h3>
+<p>Ao planejar atividades para estudantes autistas, os profissionais enfrentam principalmente a dificuldade de <strong>escolher atividades engajadoras</strong> (44%) e de <strong>prever estratégias para comportamentos desafiadores</strong> (36%). A falta de materiais adaptados aparece fortemente (32%), revelando um problema de infraestrutura que ultrapassa a formação individual.</p>
+
+<div class="chart-card" style="margin-bottom:20px">
+  <h4>Principais desafios no planejamento</h4>
+  <div id="plan-bars"></div>
+</div>
+
+<h3>Execução prática das aulas</h3>
+<p>Na prática, o cenário é ainda mais exigente. <strong>Comportamentos inesperados</strong> e <strong>dificuldade de manter a atenção</strong> lideram as dificuldades de execução, ambas acima de 40%. A combinação de turmas heterogêneas com suporte insuficiente cria um ambiente de constante improviso.</p>
+
+<div class="chart-card" style="margin-bottom:20px">
+  <h4>Dificuldades na execução prática</h4>
+  <div id="exec-bars"></div>
+</div>
+
+<h3>Frequência de adaptação e seus obstáculos</h3>
+
+<div class="chart-grid two">
+  <div class="chart-card">
+    <h4>Frequência de adaptação de atividades</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-freq"></canvas></div>
+      <div class="donut-leg" id="leg-freq"></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h4>O que mais dificulta a adaptação</h4>
+    <div id="dific-bars"></div>
+  </div>
+</div>
+
+<div class="insight amber">
+  <strong>Improviso como norma:</strong> 81% dos profissionais adaptam suas atividades sempre ou quase sempre, mas os três principais obstáculos — falta de materiais (36%), falta de formação (32%) e dificuldade de entender necessidades individuais (31%) — indicam que essa adaptação ocorre sem base técnica sólida. O resultado é um profissional sobrecarregado que supre com esforço pessoal o que deveria ser suportado por formação e infraestrutura.
+</div>
+
+<hr class="divider">
+
+<!-- SEÇÃO 3 -->
+<div class="sec-label">Seção 3</div>
+<h2>Formação e capacitação</h2>
+
+<h3>Histórico de formação em autismo</h3>
+<p>Apenas <strong>48% dos respondentes</strong> já participaram de alguma formação formal sobre autismo e Educação Física. Outros 8% buscaram informação de forma autodidata, e 44% nunca tiveram qualquer formação sobre o tema — um dado alarmante dado o volume de estudantes autistas que esses profissionais atendem.</p>
+
+<div class="chart-grid two">
+  <div class="chart-card">
+    <h4>Formação prévia em autismo</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-form"></canvas></div>
+      <div class="donut-leg" id="leg-form"></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h4>Uso de tecnologia para planejar/buscar apoio</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-tec"></canvas></div>
+      <div class="donut-leg" id="leg-tec"></div>
+    </div>
+  </div>
+</div>
+
+<h3>Conteúdos prioritários</h3>
+<p>Ao indicar os temas mais urgentes para sua formação, os profissionais apontam para dois eixos complementares: <strong>ferramentas práticas</strong> (planejamento de atividades adaptadas, jogos e esportes) e <strong>gestão emocional e comportamental</strong>. Estratégias de comunicação, terceira opção mais citada, refletem um dos maiores desafios cotidianos relatados na execução.</p>
+
+<div class="chart-card" style="margin-bottom:20px">
+  <h4>Conteúdos considerados mais urgentes</h4>
+  <div id="cont-bars"></div>
+</div>
+
+<h3>Tipo de apoio desejado</h3>
+
+<div class="chart-card" style="margin-bottom:20px">
+  <h4>Apoio desejado para melhorar a prática</h4>
+  <div id="apoio-bars"></div>
+</div>
+
+<div class="insight teal">
+  <strong>Formação é a demanda número 1:</strong> 61% pedem formação continuada específica como principal forma de apoio. Mas a segunda e terceira posições — equipe multiprofissional (47%) e sugestões práticas de jogos (45%) — mostram que a demanda vai além de cursos: os profissionais querem suporte no dia a dia, não apenas em momentos pontuais de capacitação.
+</div>
+
+<hr class="divider">
+
+<!-- SEÇÃO 4 -->
+<div class="sec-label">Seção 4</div>
+<h2>Plano de Ensino Individualizado (PEI)</h2>
+
+<p>O PEI é um instrumento central para garantir a inclusão escolar de estudantes com deficiência. Os dados revelam uma situação preocupante: fragmentação do conhecimento, baixa participação e desvalorização da Educação Física dentro desse processo.</p>
+
+<h3>Conhecimento sobre o PEI</h3>
+
+<div class="chart-grid two">
+  <div class="chart-card">
+    <h4>Conhecimento sobre o PEI</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-pei"></canvas></div>
+      <div class="donut-leg" id="leg-pei"></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h4>Participação na elaboração do PEI</h4>
+    <div id="part-bars"></div>
+  </div>
+</div>
+
+<div class="insight red">
+  <strong>Tríplice barreira:</strong> 26% nunca ouviram falar do PEI; 38% conhecem mas não sabem aplicar; e 62% ou não participam ou nunca foram convidados a participar da elaboração. Apenas 16% participam ativamente. Isso significa que o instrumento que deveria orientar a prática da Educação Física raramente chega ao professor de EF de forma significativa.
+</div>
+
+<h3>O que dificulta a participação no PEI</h3>
+
+<div class="chart-card" style="margin-bottom:20px">
+  <h4>Principais barreiras para a construção de PEIs</h4>
+  <div id="dif-pei-bars"></div>
+</div>
+
+<h3>O que querem aprender sobre PEI</h3>
+
+<div class="chart-card" style="margin-bottom:20px">
+  <h4>Conteúdos desejados para contribuir com os PEIs</h4>
+  <div id="aprend-pei-bars"></div>
+</div>
+
+<div class="insight purple">
+  <strong>Interesse real, ferramentas ausentes:</strong> A demanda por aprendizado sobre PEI é alta e muito específica. Os profissionais querem saber <em>como fazer</em> — identificar habilidades motoras (52%), adaptar objetivos (42%), ter exemplos práticos (40%). Não falta motivação; faltam modelos concretos de como inserir a Educação Física nos documentos de inclusão.
+</div>
+
+<hr class="divider">
+
+<!-- SEÇÃO 5 -->
+<div class="sec-label compare">Seção 5</div>
+<h2>Análise comparativa: Prof. EF Escolar vs. Treinador Esportivo</h2>
+
+<p>Os dois principais grupos profissionais da pesquisa — professores de Educação Física escolar (401 respondentes) e treinadores esportivos (102 respondentes) — compartilham muitos desafios, mas apresentam diferenças marcantes em contexto, lacunas de formação e relação com o PEI.</p>
+
+<div class="compare-header">
+  <div class="ch-card prof">
+    <div class="role">Prof. Ed. Física Escolar</div>
+    <div class="n">401 respondentes · 51%</div>
+    <div class="sub">87% têm ou já tiveram alunos autistas</div>
+    <div class="sub">58% atendem 4 ou mais estudantes</div>
+  </div>
+  <div class="ch-card train">
+    <div class="role">Treinador(a) Esportivo(a)</div>
+    <div class="n">102 respondentes · 13%</div>
+    <div class="sub">86% têm ou já tiveram atletas autistas</div>
+    <div class="sub">41% atendem 4 ou mais atletas</div>
+  </div>
+</div>
+
+<h3>Desafios no planejamento</h3>
+
+<div class="chart-card" style="margin-bottom:16px">
+  <h4>Comparação — desafios no planejamento (%)</h4>
+  <div id="cmp-plan"></div>
+</div>
+
+<h3>Dificuldades na execução</h3>
+
+<div class="chart-card" style="margin-bottom:16px">
+  <h4>Comparação — dificuldades na execução (%)</h4>
+  <div id="cmp-exec"></div>
+</div>
+
+<h3>Conteúdos prioritários</h3>
+
+<div class="chart-card" style="margin-bottom:16px">
+  <h4>Comparação — conteúdos mais urgentes (%)</h4>
+  <div id="cmp-cont"></div>
+</div>
+
+<h3>Relação com o PEI</h3>
+
+<div class="chart-grid two">
+  <div class="chart-card">
+    <h4 style="color:var(--blue-dark)">Prof. EF Escolar — conhece o PEI?</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-pei-p"></canvas></div>
+      <div class="donut-leg" id="leg-pei-p"></div>
+    </div>
+  </div>
+  <div class="chart-card">
+    <h4 style="color:var(--teal)">Treinador(a) — conhece o PEI?</h4>
+    <div class="donut-wrap">
+      <div class="donut-canvas-wrap"><canvas id="c-pei-t"></canvas></div>
+      <div class="donut-leg" id="leg-pei-t"></div>
+    </div>
+  </div>
+</div>
+
+<h3>Tabela-resumo das principais diferenças</h3>
+
+<table class="sum-table">
+  <tr>
+    <th>Indicador</th>
+    <th>Prof. EF Escolar</th>
+    <th>Treinador(a)</th>
+    <th>Diferença</th>
+  </tr>
+  <tr>
+    <td>Adapta sempre/quase sempre</td>
+    <td class="pct-p">83%</td><td class="pct-t">71%</td><td class="diff-pos">+12pp</td>
+  </tr>
+  <tr>
+    <td>Formação formal prévia</td>
+    <td class="pct-p">54%</td><td class="pct-t">42%</td><td class="diff-pos">+12pp</td>
+  </tr>
+  <tr>
+    <td>Usa tecnologia com frequência</td>
+    <td class="pct-p">56%</td><td class="pct-t">50%</td><td class="diff-pos">+6pp</td>
+  </tr>
+  <tr>
+    <td>Já utilizou o PEI na prática</td>
+    <td class="pct-p">38%</td><td class="pct-t">7%</td><td class="diff-pos">+31pp</td>
+  </tr>
+  <tr>
+    <td>Não conhece o PEI</td>
+    <td class="pct-p">19%</td><td class="pct-t">56%</td><td class="diff-neg">−37pp</td>
+  </tr>
+  <tr>
+    <td>Participa ativamente do PEI</td>
+    <td class="pct-p">30%</td><td class="pct-t">7%</td><td class="diff-pos">+23pp</td>
+  </tr>
+  <tr>
+    <td>Falta de materiais (obstáculo)</td>
+    <td class="pct-p">39%</td><td class="pct-t">13%</td><td class="diff-pos">+26pp</td>
+  </tr>
+  <tr>
+    <td>EF desvalorizada nos PEIs (barreira)</td>
+    <td class="pct-p">42%</td><td class="pct-t">14%</td><td class="diff-pos">+28pp</td>
+  </tr>
+  <tr>
+    <td>Dif. entender necessidades individuais</td>
+    <td class="pct-p">30%</td><td class="pct-t">43%</td><td class="diff-neg">−13pp</td>
+  </tr>
+  <tr>
+    <td>Comportamentos desafiadores (execução)</td>
+    <td class="pct-p">37%</td><td class="pct-t">45%</td><td class="diff-neg">−8pp</td>
+  </tr>
+</table>
+
+<div class="insight blue">
+  <strong>Perfis distintos, prioridades distintas:</strong> Professores escolares sofrem mais com infraestrutura precária e sentem que a EF é marginalizada nos documentos de inclusão. Treinadores chegam ao esporte adaptado com menor bagagem teórica sobre autismo e o PEI, e precisam de formação mais básica. Qualquer programa de capacitação eficaz precisa contemplar esses dois pontos de partida diferentes.
+</div>
+
+<hr class="divider">
+
+<!-- CONCLUSÕES -->
+<div class="sec-label green">Conclusões</div>
+<h2>Recomendações e próximos passos</h2>
+
+<p>Com base nos dados analisados, identificamos cinco eixos prioritários de intervenção:</p>
+
+<div class="insight teal">
+  <strong>1. Formação continuada diferenciada por perfil.</strong> Criar trilhas distintas para professores escolares e treinadores esportivos, partindo das lacunas específicas de cada grupo. Para treinadores, o ponto de partida deve ser o básico sobre TEA e o PEI. Para professores, o foco deve ser planejamento individualizado e ferramentas para inserção da EF nos documentos pedagógicos.
+</div>
+
+<div class="insight blue">
+  <strong>2. Materiais práticos e prontos para uso.</strong> 45% pedem sugestões de jogos e exercícios adaptados; 39% querem exemplos de planos de aula. A demanda não é apenas por teoria, mas por recursos que possam ser usados na próxima aula. Bancos de atividades, fichas de planejamento e modelos de PEI com foco em EF são ferramentas de alto impacto.
+</div>
+
+<div class="insight amber">
+  <strong>3. Valorização da EF no PEI.</strong> A Educação Física é sistematicamente excluída dos processos de elaboração do PEI. É necessário tanto capacitar os profissionais para contribuir com o instrumento quanto sensibilizar gestores e equipes pedagógicas para incluir o professor de EF nesse processo.
+</div>
+
+<div class="insight purple">
+  <strong>4. Estratégias de comunicação como conteúdo transversal.</strong> A dificuldade de comunicação com o estudante autista aparece em todos os módulos da pesquisa — no planejamento, na execução, nos obstáculos à adaptação. Esse tema deve ser tratado como conteúdo central em qualquer programa de formação, não como tópico complementar.
+</div>
+
+<div class="insight red">
+  <strong>5. Suporte multiprofissional estruturado.</strong> 47% pedem acesso a equipe multiprofissional. O professor de EF não pode — e não deve — trabalhar sozinho com estudantes autistas. Criar mecanismos de colaboração entre EF, psicologia, terapia ocupacional e fonoaudiologia no contexto escolar e esportivo é condição estrutural para qualidade da inclusão.
+</div>
+
+<div class="footer">
+  Relatório gerado com base nos dados da pesquisa "Consolidado — Desafios e Necessidades" · 783 respondentes · 14 seminários · 2025
+</div>
+
+<script>
+const COLORS = {
+  blue:'#378ADD', blueDark:'#185FA5', blueLight:'#85B7EB',
+  teal:'#1D9E75', tealLight:'#5DCAA5',
+  coral:'#D85A30', amber:'#BA7517', amberLight:'#FAC775',
+  gray:'#888780', grayLight:'#B4B2A9',
+  purple:'#7F77DD', purpleLight:'#AFA9EC',
+  red:'#E24B4A', green:'#639922', pink:'#D4537E'
+};
+
+function donut(id, legId, data, colors) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const total = data.reduce((s,d)=>s+d[1],0);
+  new Chart(ctx, {
+    type:'doughnut',
+    data:{ labels:data.map(d=>d[0]), datasets:[{ data:data.map(d=>d[1]), backgroundColor:colors, borderWidth:0, hoverOffset:4 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'60%', plugins:{ legend:{display:false}, tooltip:{enabled:false} } }
+  });
+  const el = document.getElementById(legId);
+  if(!el) return;
+  el.innerHTML = data.map((d,i)=>{
+    const p = Math.round(d[1]/total*100);
+    return `<div class="item"><span class="dot" style="background:${colors[i]}"></span>${d[0]} <span class="pct">${p}%</span></div>`;
+  }).join('');
+}
+
+function hbars(containerId, data, color, total, labelWidth) {
+  const max = data[0][1];
+  const lw = labelWidth || 180;
+  const el = document.getElementById(containerId);
+  el.innerHTML = data.map(([label,val])=>{
+    const pct = Math.round(val/total*100);
+    const w = Math.round(val/max*100);
+    return `<div class="hbar-row">
+      <div class="hbar-label" style="width:${lw}px">${label}</div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${w}%;background:${color}"></div></div>
+      <div class="hbar-val">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+function cbars(containerId, rows) {
+  const maxP = Math.max(...rows.map(r=>r.p));
+  const el = document.getElementById(containerId);
+  el.innerHTML = rows.map(r=>`
+    <div class="cbar-wrap">
+      <div class="cbar-label">${r.label}</div>
+      <div class="cbar-row"><span class="cbar-tag p">Prof.</span><div class="cbar-track"><div class="cbar-fill p" style="width:${Math.round(r.p/maxP*100)}%"></div></div><span class="cbar-val">${r.p}%</span></div>
+      <div class="cbar-row"><span class="cbar-tag t">Trein.</span><div class="cbar-track"><div class="cbar-fill t" style="width:${Math.round(r.t/maxP*100)}%"></div></div><span class="cbar-val">${r.t}%</span></div>
+    </div>`).join('');
+}
+
+// --- SEMINÁRIOS ---
+new Chart(document.getElementById('c-sem').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:['SEDUC-SP/CPB','SME Barueri','SEDUC-RO','SME Rio Claro','SME Lábrea','SME Sto. Amaro','EPE CPB','SME Votuporanga','SESC-SE','SME Piracicaba','SME Lauro Freitas','SME São Paulo','CR Blumenau','SESC-SLZ'],
+    datasets:[{ data:[125,92,91,66,55,52,50,50,45,43,37,33,27,17], backgroundColor:COLORS.blue, borderRadius:4, borderSkipped:false }]
+  },
+  options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{enabled:false}}, scales:{ x:{grid:{display:false},ticks:{font:{size:10}}}, y:{grid:{display:false},ticks:{font:{size:10}}} } }
+});
+
+// --- ATUAÇÃO ---
+donut('c-atua','leg-atua',[['Prof. EF Escolar',444],['Treinador Esportivo',150],['PAEE/AEE',35],['Prof. de Apoio',14],['Outros',140]],[COLORS.blue,COLORS.teal,COLORS.purple,COLORS.amber,COLORS.gray]);
+
+// --- EXPERIÊNCIA ---
+donut('c-exp','leg-exp',[['Sim, atualmente',543],['Não',138],['Sim, no passado',102]],[COLORS.teal,COLORS.gray,COLORS.amber]);
+
+// --- QTD ALUNOS ---
+new Chart(document.getElementById('c-qtd').getContext('2d'), {
+  type:'bar',
+  data:{
+    labels:['4 ou mais','Nenhum atualmente','2 a 3','1'],
+    datasets:[{ data:[420,179,130,54], backgroundColor:[COLORS.blue,COLORS.gray,COLORS.blueLight,COLORS.grayLight], borderRadius:6, borderSkipped:false }]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},tooltip:{enabled:false}}, scales:{ x:{grid:{display:false}}, y:{grid:{color:'#e0ddd4'},ticks:{font:{size:10}}} } }
+});
+
+// --- PLANEJAMENTO ---
+hbars('plan-bars',[
+  ['Escolher atividades engajadoras',343],
+  ['Prever estratégias p/ comportamentos',280],
+  ['Adequar à diversidade do grupo',254],
+  ['Adaptar objetivos ao aluno',248],
+  ['Falta de materiais adaptados',213],
+  ['Planejar c/ pouco tempo',175],
+], COLORS.coral, 783);
+
+// --- EXECUÇÃO ---
+hbars('exec-bars',[
+  ['Comportamentos inesperados',337],
+  ['Dificuldade de manter atenção',335],
+  ['Baixa participação/recusa',293],
+  ['Dificuldade de comunicação',190],
+  ['Interação limitada c/ colegas',188],
+  ['Falta de apoio profissional',117],
+], COLORS.red, 783);
+
+// --- FREQ ADAPTAÇÃO ---
+donut('c-freq','leg-freq',[['Sempre',263],['Quase sempre',367],['Raramente',110],['Nunca',43]],[COLORS.teal,COLORS.tealLight,COLORS.grayLight,COLORS.gray]);
+
+// --- DIFICULTADORES ---
+hbars('dific-bars',[
+  ['Falta de materiais adequados',284],
+  ['Falta de formação específica',253],
+  ['Dificuldade entender necessidades',242],
+  ['Dificuldade de comunicação',214],
+  ['Pouco tempo para planejar',193],
+], COLORS.amber, 783, 200);
+
+// --- FORMAÇÃO ---
+donut('c-form','leg-form',[['Sim (formal)',374],['Não',344],['Autodidata',65]],[COLORS.blue,COLORS.gray,COLORS.amber]);
+
+// --- TECNOLOGIA ---
+donut('c-tec','leg-tec',[['Sim, com frequência',412],['Às vezes',263],['Raramente',69],['Nunca',39]],[COLORS.teal,COLORS.tealLight,COLORS.grayLight,COLORS.gray]);
+
+// --- CONTEÚDOS ---
+hbars('cont-bars',[
+  ['Planejamento de atividades adaptadas',387],
+  ['Regulação emocional e comportamento',352],
+  ['Estratégias de comunicação',304],
+  ['Sugestões de jogos e esportes',259],
+  ['Características do autismo',203],
+  ['Organização do ambiente',169],
+  ['Avaliação motora',169],
+], COLORS.blue, 783);
+
+// --- APOIO ---
+hbars('apoio-bars',[
+  ['Formação continuada específica',476],
+  ['Sugestões práticas de jogos/exercícios',349],
+  ['Equipe multiprofissional',318],
+  ['Exemplos de planos de aula',290],
+  ['Troca de experiências',250],
+  ['Materiais/equipamentos adaptados',246],
+  ['Estratégias de comunicação',242],
+], COLORS.purple, 783);
+
+// --- PEI CONHECIMENTO ---
+donut('c-pei','leg-pei',[['Conhece e já usou',286],['Conhece, não sabe aplicar',294],['Não conhece',203]],[COLORS.teal,COLORS.amber,COLORS.gray]);
+
+// --- PARTICIPAÇÃO PEI ---
+hbars('part-bars',[
+  ['Não participo',184],
+  ['Nunca foi convidado(a)',149],
+  ['Sim, ativamente',129],
+  ['Apenas recebo o plano pronto',41],
+], COLORS.purple, 503, 200);
+
+// --- DIFICULDADES PEI ---
+hbars('dif-pei-bars',[
+  ['Falta de formação específica',277],
+  ['EF não valorizada nos PEIs',229],
+  ['Falta de diálogo c/ equipe',193],
+  ['Insegurança nos objetivos',156],
+  ['Falta de tempo',149],
+], COLORS.red, 783, 200);
+
+// --- APRENDER PEI ---
+hbars('aprend-pei-bars',[
+  ['Identificar habilidades motoras para o PEI',406],
+  ['Adaptar objetivos da EF p/ autistas',330],
+  ['Exemplos práticos de PEIs c/ foco em EF',311],
+  ['Estabelecer metas motoras mensuráveis',289],
+  ['Avaliar necessidades motoras/funcionais',253],
+  ['Colaborar c/ equipe pedagógica',200],
+], COLORS.blue, 783, 230);
+
+// --- COMPARATIVO: PLANEJAMENTO ---
+cbars('cmp-plan',[
+  {label:'Escolher atividades engajadoras', p:43, t:36},
+  {label:'Adequar à diversidade do grupo', p:33, t:29},
+  {label:'Prever estratégias p/ comportamentos', p:32, t:32},
+  {label:'Adaptar objetivos ao aluno', p:35, t:29},
+  {label:'Falta de materiais adaptados', p:32, t:9},
+]);
+
+// --- COMPARATIVO: EXECUÇÃO ---
+cbars('cmp-exec',[
+  {label:'Comportamentos inesperados', p:37, t:45},
+  {label:'Dificuldade de manter atenção', p:40, t:43},
+  {label:'Baixa participação / recusa', p:39, t:25},
+  {label:'Dificuldade de comunicação', p:21, t:28},
+  {label:'Interação limitada c/ colegas', p:26, t:22},
+]);
+
+// --- COMPARATIVO: CONTEÚDOS ---
+cbars('cmp-cont',[
+  {label:'Planejamento de atividades adaptadas', p:50, t:43},
+  {label:'Regulação emocional', p:43, t:40},
+  {label:'Estratégias de comunicação', p:37, t:41},
+  {label:'Características do autismo', p:25, t:37},
+  {label:'Sugestões de jogos e esportes', p:36, t:22},
+]);
+
+// --- PEI COMPARATIVO ---
+donut('c-pei-p','leg-pei-p',[['Conhece e já usou',151],['Conhece, não sabe aplicar',175],['Não conhece',75]],[COLORS.blue,COLORS.blueLight,COLORS.gray]);
+donut('c-pei-t','leg-pei-t',[['Conhece e já usou',7],['Conhece, não sabe aplicar',38],['Não conhece',57]],[COLORS.teal,COLORS.tealLight,COLORS.gray]);
+</script>
+</body>
+</html>
